@@ -70,7 +70,7 @@ public class LogConfig {
 				log.error("ERROR: [요청 처리번호 : ({}), error_message : ({})]", randomNumber, e.getMessage());
 			}
 		}
-		return null;
+		return pjp.proceed();
 	}
 
 	

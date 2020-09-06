@@ -1,5 +1,9 @@
 package com.hansung.web.vo;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,11 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.ColumnDefault;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.hansung.web.vo.audit.DateAudit;
 
 import lombok.Getter;
@@ -41,6 +47,10 @@ public class ImageFolder extends DateAudit{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="id")
     private User user;
+    
+	@JsonManagedReference
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "imageFolder")
+	private Set<Image> image = new HashSet<>();
 
     public ImageFolder(){
     }
