@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.hansung.web.dao.ImageFolderDao;
 import com.hansung.web.dao.UserDao;
+import com.hansung.web.dto.ImageRes;
 import com.hansung.web.dto.UserImageFolderRes;
 import com.hansung.web.exception.BadRequestException;
 import com.hansung.web.vo.ImageFolder;
@@ -33,8 +34,12 @@ public class ImageFolderService {
 		userDao.save(user);
 	}
 
-	public List<UserImageFolderRes> findImageFolderByName(String name) {
-		return imageFolderDao.findImageFolderByName(name);
+	public List<UserImageFolderRes> findImageFoldersByName(String name) {
+		return imageFolderDao.findImageFoldersByName(name);
+	}
+
+	public List<ImageRes> findImagesByImageFolderId(int imageFolderId) {
+		return imageFolderDao.findImagesByImageFolderId(imageFolderId);
 	}
 
 }
