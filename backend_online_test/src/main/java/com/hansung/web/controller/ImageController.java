@@ -24,6 +24,7 @@ public class ImageController {
 
 	@Autowired
 	private ImageService imageService;
+
 	
 	@SuppressWarnings("unchecked")
 	@PostMapping("/image/{imageFolderId}")
@@ -33,4 +34,5 @@ public class ImageController {
 		imageService.insertImage(user, imageFolderId, imageList);
 		return ResponseEntity.ok().body(new ApiResponse(true, "success"));
 	}
+
 }

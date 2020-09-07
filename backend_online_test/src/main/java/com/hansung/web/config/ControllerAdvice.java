@@ -47,5 +47,11 @@ public class ControllerAdvice {
 		String message = "잘못된 형태의값이 전달되었습니다.";
 		return ResponseEntity.badRequest().body(new ApiResponse(false, message));
 	}
+	
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<?> exceptionHandler(IllegalArgumentException e) {
+		String message = "입력값의 내부 요소 중 입력 형태와 맞지않는 값이 포함되어있습니다.";
+		return ResponseEntity.badRequest().body(new ApiResponse(false, message));
+	}
 }
 

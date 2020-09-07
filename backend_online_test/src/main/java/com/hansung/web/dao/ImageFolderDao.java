@@ -43,6 +43,6 @@ public interface ImageFolderDao extends JpaRepository<ImageFolder, Long> {
 			"ON f.image_folder_id = i.image_folder_id\n" + 
 			"WHERE i.image_folder_id = ?1\n" + 
 			"ORDER BY i.created_at ASC", nativeQuery = true)
-	List<ImageRes> findImagesByImageFolderId(int imageFolderId); 
+	List<ImageRes> findImagesByImageFolderId(int imageFolderId);
 }
 
