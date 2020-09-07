@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hansung.web.dto.ApiResponse;
+import com.hansung.web.dto.GetApiRes;
+import com.hansung.web.dto.ApiRes;
 import com.hansung.web.dto.ImageRes;
 import com.hansung.web.dto.UserImageFolderRes;
 import com.hansung.web.service.ImageFolderService;
@@ -27,23 +28,23 @@ public class ImageFolderController {
 	@Autowired
 	private ImageFolderService imageFolderService;
 
-	@GetMapping("/folderlist/")
+	@GetMapping("/folder/me")
 	public ResponseEntity<?> getImageFolder(HttpServletRequest request) {
 		User requestUser = (User) request.getAttribute("user");
 		List<UserImageFolderRes> result = imageFolderService.findImageFoldersByName(requestUser.getName());
-		return ResponseEntity.ok().body(result);
+		return ResponseEntity.ok().body(new GetApiRes(true, result));
 	}
 	
 	@GetMapping("/folder/{imageFolderId}")
 	public ResponseEntity<?> getImageFolder(@PathVariable("imageFolderId") int imageFolderId) {
 		List<ImageRes> result = imageFolderService.findImagesByImageFolderId(imageFolderId);
-		return ResponseEntity.ok().body(result);
+		return ResponseEntity.ok().body(new GetApiRes(true, result));
 	}
 	
 	@PostMapping("/folder")
 	public ResponseEntity<?> insertImageFolder(HttpServletRequest request, @RequestBody ImageFolder imageFolder) {
 		User requestUser = (User) request.getAttribute("user");
 		imageFolderService.insertImageFolder(requestUser.getName(), imageFolder);
-		return ResponseEntity.ok().body(new ApiResponse(true, "success"));
+		return ResponseEntity.ok().body(new ApiRes(true, "success"));
 	}
 }

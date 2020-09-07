@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hansung.web.dao.UserDao;
-import com.hansung.web.dto.ApiResponse;
+import com.hansung.web.dto.ApiRes;
 import com.hansung.web.exception.UnauthorizedException;
 import com.hansung.web.vo.User;
 
@@ -26,7 +26,7 @@ public class UserController {
 	public ResponseEntity<?> getCurrentUser(@PathVariable("name") String name) {
 		userDao.findUserByName(name)
 				.orElseThrow(() -> new UnauthorizedException(HttpStatus.BAD_REQUEST, "등록되지 않은 회원입니다."));
-		return ResponseEntity.ok().body(new ApiResponse(true, "등록된 회왼입니다."));
+		return ResponseEntity.ok().body(new ApiRes(true, "등록된 회왼입니다."));
 	}
 
 	@PostMapping("/user/regist")
@@ -35,6 +35,6 @@ public class UserController {
 		if (result != null) {
 			return ResponseEntity.ok().body("이미 존재하는 name입니다..");
 		}
-		return ResponseEntity.ok().body(new ApiResponse(true, userDao.save(user).getName() + "회원의 회원등록이 완료되었습니다."));
+		return ResponseEntity.ok().body(new ApiRes(true, userDao.save(user).getName() + "회원의 회원등록이 완료되었습니다."));
 	}
 }

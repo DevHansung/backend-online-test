@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hansung.web.dto.ApiResponse;
+import com.hansung.web.dto.ApiRes;
 import com.hansung.web.service.ImageService;
 import com.hansung.web.vo.Image;
 import com.hansung.web.vo.User;
@@ -32,7 +32,7 @@ public class ImageController {
 		List<Image> imageList = (List<Image>) params.get("images");
 		User user = (User) request.getAttribute("user");
 		imageService.insertImage(user, imageFolderId, imageList);
-		return ResponseEntity.ok().body(new ApiResponse(true, "success"));
+		return ResponseEntity.ok().body(new ApiRes(true, "success"));
 	}
 
 }

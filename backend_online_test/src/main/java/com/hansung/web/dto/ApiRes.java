@@ -5,12 +5,12 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ApiResponse {
+public class ApiRes {
     private Boolean status;
-    private String message;
+    private String data;
 
-    public ApiResponse(Boolean status, String message) {
+    public ApiRes(Boolean status, String data) {
         this.status = status;
-        this.message = message;
+        this.data = data;
     }
 }
