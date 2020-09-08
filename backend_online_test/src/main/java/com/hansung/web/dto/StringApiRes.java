@@ -1,17 +1,15 @@
 package com.hansung.web.dto;
 
-import java.util.List;
-
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class GetApiRes {
+public class StringApiRes {
     private Boolean status;
-    private List<?> data;
+    private String data;
 
-    public GetApiRes(Boolean status, List<?> data) {
+    public StringApiRes(Boolean status, String data) {
         this.status = status;
         this.data = data;
     }

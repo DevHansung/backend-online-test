@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hansung.web.dto.GetApiRes;
+import com.hansung.web.dto.ListApiRes;
 import com.hansung.web.dto.ImageTagLankRes;
 import com.hansung.web.service.ImageTagService;
 
@@ -22,6 +22,6 @@ public class ImageTagController {
 	@GetMapping("/imagetag/rank")
 	public ResponseEntity<?> getImageTag() {
 		List<ImageTagLankRes> imageTagRank = imageTagService.findImageTagRank();
-		return ResponseEntity.ok().body(new GetApiRes(true, imageTagRank));
+		return ResponseEntity.ok().body(new ListApiRes(true, imageTagRank));
 	}
 }
