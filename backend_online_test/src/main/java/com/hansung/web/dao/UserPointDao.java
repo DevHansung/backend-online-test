@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.hansung.web.dto.UnspentFolderRes;
 import com.hansung.web.vo.UserPoint;
 
 @Repository
@@ -53,6 +54,15 @@ public interface UserPointDao extends JpaRepository<UserPoint, Long> {
 			"	A.user_available_point\n" + 
 			"HAVING  A.user_available_point-SUM(B.user_available_point)>:totalMinusPoint*(-1);", nativeQuery = true)
 	List<UserPoint> findUserMinusPoints(@Param("id") int id, @Param("totalMinusPoint") int totalMinusPoint);
-
+	
+	@Query(value = "SELECT  \n" + 
+			"u.image_folder_id as imageFolderId, \n" + 
+			"i.image_folder_name as imageFolderName \n" + 
+			"FROM user_point u\n" + 
+			"LEFT OUTER JOIN  image_folder i\n" + 
+			"ON u.image_folder_id >= i.image_folder_id\n" + 
+			"WHERE u.id = ?1 and u.user_save_point = 1000 and u.user_available_point = 1000\n" + 
+			"GROUP BY u.image_folder_id", nativeQuery = true)
+	List<UnspentFolderRes> findUnspentFolderById(int id);
 }
 
