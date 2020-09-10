@@ -1,6 +1,5 @@
 package com.hansung.web.controller;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hansung.web.dto.MapApiRes;
+import com.hansung.web.dto.StringApiRes;
 import com.hansung.web.service.ImageService;
 import com.hansung.web.vo.Image;
 import com.hansung.web.vo.User;
@@ -32,8 +31,8 @@ public class ImageController {
 	public ResponseEntity<?> insertImage(HttpServletRequest request, @PathVariable("imageFolderId") int imageFolderId, @RequestBody Map<String, Object> params) {
 		List<Image> imageList = (List<Image>) params.get("images");
 		User user = (User) request.getAttribute("user");
-		LinkedHashMap<String, Object> result = imageService.insertImage(user, imageFolderId, imageList);
-		return ResponseEntity.ok().body(new MapApiRes(true, result));
+		imageService.insertImage(user, imageFolderId, imageList);
+		return ResponseEntity.ok().body(new StringApiRes(true, "success"));
 	}
 
 }

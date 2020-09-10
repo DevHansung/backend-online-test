@@ -1,6 +1,5 @@
 package com.hansung.web.service;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +28,7 @@ public class ImageService {
 	private UserPointDao userPointDao;
 
 	@Transactional
-	public LinkedHashMap<String, Object> insertImage(User user, int imageFolderId, List<Image> imageList) {
+	public void insertImage(User user, int imageFolderId, List<Image> imageList) {
 		ImageFolder imageFolder = imageFolderDao.findImageFolderByImageFolderId(imageFolderId)
 				.orElseThrow(() -> new BadRequestException(HttpStatus.BAD_REQUEST, "존재하지 않는 폴더명 입니다."));
 		if (!imageFolder.getUser().getName().equals(user.getName())) {
@@ -39,14 +38,10 @@ public class ImageService {
 		ObjectMapper mapper = new ObjectMapper();
 		List<ImageReq> imageListConvert = mapper.convertValue(imageList, new TypeReference<List<ImageReq>>() {
 		});
-		UserPoint userPoint = userPointDao.findUserPointByUserId(user.getId())
+		int totalMinusPoint = imageListConvert.size() * 100;
+		int userTotalAvailablePoint = (Integer)userPointDao.findUserTotalAvailablePointById(user.getId())
 				.orElseThrow(() -> new BadRequestException(HttpStatus.BAD_REQUEST, "포인트 테이블이 존재하지 않습니다."));
-		if (userPoint.getUserPointValue() >= imageListConvert.size() * 100) {
-			LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();
-			result.put("beforePoint", userPoint.getUserPointValue());
-			result.put("afterPoint", userPoint.getUserPointValue() - imageListConvert.size() * 100);
-			userPoint.setUserPointValue(userPoint.getUserPointValue() - imageListConvert.size() * 100);
-			userPointDao.save(userPoint);
+		if (userTotalAvailablePoint >= totalMinusPoint) {
 			for (int i = 0; i < imageListConvert.size(); i++) {
 				if (imageListConvert.get(i).getImage().getImageUrl().trim().length() == 0) {
 					throw new BadRequestException(HttpStatus.BAD_REQUEST,
@@ -64,9 +59,18 @@ public class ImageService {
 				}
 				imageFolderDao.save(imageFolder);
 			}
-			return result;
+			List<UserPoint> userMinusPoints= userPointDao.findUserMinusPoints(user.getId(), totalMinusPoint);
+			for(int i=0 ; i<userMinusPoints.size(); i++) {
+				int getUserSavePoint = userMinusPoints.get(i).getUserSavePoint();
+				int getUserAvailablePoint = userMinusPoints.get(i).getUserAvailablePoint();
+				int getUserMinusPoint = userMinusPoints.get(i).getUserMinusPoint();
+				userMinusPoints.get(i).setUserAvailablePoint(getUserAvailablePoint-getUserMinusPoint);
+				userMinusPoints.get(i).setUserMinusPoint(getUserSavePoint-getUserAvailablePoint+getUserMinusPoint);
+				userPointDao.save(userMinusPoints.get(i));
+			}
 		} else
-			throw new BadRequestException(HttpStatus.BAD_REQUEST, "보유포인트가 차감포인트보다 적습니다." 
-					+ "보유포인트: " + userPoint.getUserPointValue() + "차감포인트: " + imageListConvert.size() * 100);
+			throw new BadRequestException(HttpStatus.BAD_REQUEST, 
+					"포인트가 부족합니다. 부족한 포인트:" + (userTotalAvailablePoint-totalMinusPoint)
+					+ ", 보유포인트:" + userTotalAvailablePoint + ", 차감포인트:" + totalMinusPoint);
 	}
 }
