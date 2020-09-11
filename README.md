@@ -28,16 +28,16 @@
 - API문서는 Swagger을 이용하여 작성 하였고, 프로젝트 실행을통해 확인 가능합니다.
 	- 프로젝트 실행 후 아래 url 접속
 	  `http://localhost:8080/swagger-ui.html`
-	  
-|API|설명|
-|--|--|--|
-|(POST)/api/user|회원등록|
-|(POST)/api/user|이미지 폴더 생성|
-|(GET)/api/image{imageFolderId}|이미지 등록|
-|(GET)/api/folder/me|자신의 이미지 폴더 조회|
-|(GET)/api/folder/{imageFolderId}|회원의 특정폴더 내부 이미지 조회|
-|(GET)/api/image/rank|가장 많이 달린 이미지 태그 TOP10|
-|(POST)/api/point/unspent/{id}|전체 폴더중 포인트 소모가 없는 폴더 목록|
+
+	|API|설명|
+	|--|--|
+	|(POST)/api/user|회원등록|
+	|(POST)/api/user|이미지 폴더 생성|
+	|(GET)/api/image{imageFolderId}|이미지 등록|
+	|(GET)/api/folder/me|자신의 이미지 폴더 조회|
+	|(GET)/api/folder/{imageFolderId}|회원의 특정폴더 내부 이미지 조회|
+	|(GET)/api/image/rank|가장 많이 달린 이미지 태그 TOP10|
+	|(POST)/api/point/unspent/{id}|전체 폴더중 포인트 소모가 없는 폴더 목록|
 
 #### 4. 설치/빌드/ 실행
  - 설치  
