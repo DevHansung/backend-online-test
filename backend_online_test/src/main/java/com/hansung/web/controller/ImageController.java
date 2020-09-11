@@ -29,6 +29,7 @@ public class ImageController {
 	@SuppressWarnings("unchecked")
 	@PostMapping("/image/{imageFolderId}")
 	public ResponseEntity<?> insertImage(HttpServletRequest request, @PathVariable("imageFolderId") int imageFolderId, @RequestBody Map<String, Object> params) {
+		System.out.println(params);
 		List<Image> imageList = (List<Image>) params.get("images");
 		User user = (User) request.getAttribute("user");
 		imageService.insertImage(user, imageFolderId, imageList);

@@ -24,17 +24,17 @@ public class ImageFolderService {
 	@Autowired
 	private ImageFolderDao imageFolderDao;
 
-	public void insertImageFolder(User requestName, ImageFolder imageFolder) {
+	public void insertImageFolder(User requestUser, ImageFolder imageFolder) {
 		if (imageFolder.getImageFolderName().trim().length() == 0) {
 			throw new BadRequestException(HttpStatus.BAD_REQUEST, "폴더명에 공백을 허용하지 않습니다..");
 		}
-		User user = userDao.findByName(requestName.getName());
-		
+		User user = userDao.findByName(requestUser.getName());
 		UserPoint userPoint = new UserPoint();
 		userPoint.setUserSavePoint(1000);
 		userPoint.setUserAvailablePoint(userPoint.getUserSavePoint());
 		userPoint.setUser(user);
 		userPoint.setImageFolder(imageFolder);
+		imageFolder.setUser(user);
 		imageFolder.setUserPoint(userPoint);
 		user.getImageFolder().add(imageFolder);
 		userDao.save(user);
